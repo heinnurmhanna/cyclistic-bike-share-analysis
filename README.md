@@ -387,3 +387,15 @@ Key Insights:
 ## Cyclistic Bike Usage by Day of Week
 
 ![Cyclistic Bike Usage](bike_usage_day_of_week.png)
+
+**Key Insights**
+- The analysis shows clear behavioral differences between casual riders and annual members.
+- Casual riders take longer trips. Their average ride duration ranges from about 18–26 minutes, while member rides average around 11–13 minutes.
+- Members ride more frequently during weekdays, suggesting that they use Cyclistic bikes mainly for commuting or daily transportation.
+- Casual riders are more active during weekends, with the highest number of rides occurring on Saturday and Sunday.
+- Weekend rides by casual riders are also longer in duration, indicating that these trips are likely recreational or leisure-oriented.
+- Overall, the data suggests that members primarily use bikes for routine transportation, while casual riders tend to use them for leisure activities, especially on weekends.
+
+## Number of Rides by Day of Week and Rider Type ##
+
+![Cyclistic Bike Usage](bike_usage_day_of_week.png)
