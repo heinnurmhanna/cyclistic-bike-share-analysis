@@ -38,13 +38,13 @@ Before proceeding to data processing, the dataset was reviewed to ensure it met 
 
 After verifying the dataset structure and credibility, the data was ready to be cleaned and transformed in the next stage of the analysis.
 
-### 2.1. DATA PREPARATION PROCESS STEP-BY-STEP ###
+## 3. PROCESS ##
 
-#### STEP 1. COMBINE THE DATASETS ####
+### STEP 1. COMBINE THE DATASETS ###
 
 All monthly trip datasets were combined into a single table in Google BigQuery to simplify analysis and ensure the full dataset can be queried efficiently. This unified table contains **5,552,092 rows**, representing all recorded bike trips for the selected period.
 
-#### STEP 2. INITIAL DATA EXPLORATION ####
+### STEP 2. INITIAL DATA EXPLORATION ###
 
 The first step was to explore the dataset and verify that the main fields contain expected values.
 
@@ -96,7 +96,7 @@ FROM `cyclistic-bike-share-heinnurm.bike_share_data.trips_2025`
 
 This check ensures there are no obvious timestamp anomalies.
 
-#### STEP 3. DUPLICATE CHECK ####
+### STEP 3. DUPLICATE CHECK ###
 
 To verify data integrity, duplicate ride IDs were checked.
 
@@ -107,11 +107,33 @@ SELECT
 FROM `cyclistic-bike-share-heinnurm.bike_share_data.trips_2025`
 ```
 
-Result:
+**Result:**
 - total_rows = 5,552,092
 - distinct_ride_ids = 5,552,092
 
 Since both values match, the dataset contains no duplicate ride records.
 
+### STEP 4. IDENTIFY MISSING VALUES###
 
+Next, the dataset was checked for NULL values in key columns.
 
+```sql
+SELECT
+  COUNTIF(start_station_name IS NULL) AS null_start_station,
+  COUNTIF(end_station_name IS NULL) AS null_end_station,
+  COUNTIF(started_at IS NULL) AS null_started_at,
+  COUNTIF(ended_at IS NULL) AS null_ended_at,
+  COUNTIF(member_casual IS NULL) AS null_member_type
+FROM `cyclistic-bike-share-heinnurm.bike_share_data.trips_2025`
+```
+
+A relatively large number of records contain missing values for _start_station_name_ and _end_station_name_. This is common in bike-share datasets and may occur when rides begin or end outside official docking stations or when station metadata is unavailable.
+
+However, the critical analytical fields are complete:
+- _started_at_ – no missing values
+- _ended_at_ – no missing values
+- _member_casual_ – no missing values
+
+Because the main objective of the analysis is to compare **casual riders and annual members, the missing station names do not significantly affect the core analysis.**
+
+Therefore, these rows will be **retained in the dataset.**
