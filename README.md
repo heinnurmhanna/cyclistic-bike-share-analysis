@@ -299,14 +299,20 @@ Cyclistic members seem to rely on bikes as a transportation tool, while casual r
 
 ### 4.7. Rides by month ###
 
-| Month    | Member rides | Casual rides |
-| -------- | ------------ | ------------ |
-| January  | Low          | Very low     |
-| April    | Increasing   | Increasing   |
-| June     | High         | Very high    |
-| July     | High         | Peak         |
-| August   | High         | Peak         |
-| December | Moderate     | Very low     |
+| Month     | Member rides | Casual rides | Total rides |
+| --------- | ------------ | ------------ | ----------- |
+| January   | 113,037      | 24,742       | 137,779     |
+| February  | 124,144      | 27,757       | 151,901     |
+| March     | 212,268      | 85,862       | 298,130     |
+| April     | 262,137      | 109,239      | 371,376     |
+| May       | 319,845      | 182,770      | 502,615     |
+| June      | 386,795      | 292,006      | 678,801     |
+| July      | 440,106      | 323,352      | 763,458     |
+| August    | 452,439      | 337,878      | 790,317     |
+| September | 449,294      | 265,268      | 714,562     |
+| October   | 422,058      | 224,038      | 646,096     |
+| November  | 257,401      | 99,082       | 356,483     |
+| December  | 112,455      | 28,090       | 140,545     |
 
 ```sql
 SELECT
@@ -328,10 +334,10 @@ Casual riders are primarily seasonal leisure users, while members are regular tr
 
 ### 4.8. Bikes type usage ###
 
-| Rider type | Classic bike | Electric bike | Docked bike      |
-| ---------- | ------------ | ------------- | ---------------- |
-| Member     | High usage   | High usage    | Very low         |
-| Casual     | High usage   | Medium usage  | Noticeable usage |
+| Rideable Type | Member Rides | Casual Rides | Total Rides |
+|:--------------|-------------:|-------------:|------------:|
+| Classic Bike  | 1,270,441    | 671,943      | 1,942,384   |
+| Electric Bike | 2,281,538    | 1,328,141    | 3,609,679   |
 
 ```sql
 SELECT
