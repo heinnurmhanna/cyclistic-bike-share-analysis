@@ -405,3 +405,16 @@ Key Insights:
 ## Number of Rides by Day of Week and Rider Type ##
 
 ![Cyclistic Bike Usage](bike_usage_day_of_week.png)
+
+## Bike Type Usage by Rider Type
+
+![Cyclistic_Bike_Usage](rideable_type_usage.png) 
+
+**Key Insights**
+
+- Electric bikes are significantly more popular than classic bikes for both rider groups. Total electric bike rides are nearly 1.7 million more than classic bike rides.
+- Annual members use bikes more frequently overall, accounting for the majority of rides across both bike types.
+- Members show especially strong preference for electric bikes, suggesting they are commonly used for commuting or regular travel.
+- Casual riders also prefer electric bikes, which may indicate that electric bikes provide a more comfortable option for leisure or longer rides.
+
+  
