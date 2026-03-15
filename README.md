@@ -386,3 +386,4 @@ Key Insights:
 
 ## Cyclistic Bike Usage by Day of Week
 
+![Cyclistic Bike Usage](bike_usage_day_of_week.png)
