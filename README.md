@@ -388,7 +388,7 @@ Key Insights:
 - Weekend rides by casual riders are also longer in duration, indicating that these trips are likely recreational or leisure-oriented.
 - Overall, the data suggests that members primarily use bikes for routine transportation, while casual riders tend to use them for leisure activities, especially on weekends.
 
-## 5. VISUALIZE ##
+## 5. SHARE ##
 
 ## Cyclistic Bike Usage by Day of Week
 
@@ -417,4 +417,20 @@ Key Insights:
 - Members show especially strong preference for electric bikes, suggesting they are commonly used for commuting or regular travel.
 - Casual riders also prefer electric bikes, which may indicate that electric bikes provide a more comfortable option for leisure or longer rides.
 
-  
+## 6. ACT ##
+
+Based on the analysis of Cyclistic bike usage patterns, several key behavioral differences were identified between casual riders and annual members. Casual riders tend to take longer trips and are more active during weekends and summer months, while annual members use bikes more frequently during weekdays for commuting and short transportation trips.
+
+To increase the number of annual memberships, the following marketing strategies are recommended:
+
+**1. Promote weekend-to-membership conversion campaigns**
+
+Casual riders show the highest activity on weekends and during summer months. Cyclistic could introduce targeted weekend promotions encouraging casual riders to upgrade to annual memberships. For example, offering a discounted membership after a certain number of weekend rides could motivate frequent casual riders to switch to a membership plan.
+
+**2. Highlight cost savings and commuting benefits**
+
+Annual members use bikes more frequently for short weekday trips, suggesting that memberships provide value for regular transportation. Marketing campaigns should emphasize the long-term cost savings and convenience of annual memberships compared to repeated casual rides.
+
+**3. Use digital marketing to target frequent casual riders**
+
+Cyclistic can leverage digital channels such as email campaigns, mobile app notifications, and social media advertising to target casual riders who frequently use the service. Personalized messages highlighting membership benefits, ride statistics, and seasonal promotions could encourage conversion to annual memberships.
