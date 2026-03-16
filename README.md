@@ -222,28 +222,35 @@ This reveals a clear behavioral difference:
 
 ### 4.4. Ride duration distribution ###
 
-Ride duration extremes were also analyzed.
+Ride duration extremes were also analyzed. These values help identify extreme ride durations and potential data anomalies. 
 
 ```sql
 SELECT
   member_casual,
   AVG(ride_length_minutes) AS avg_ride,
   MAX(ride_length_minutes) AS max_ride,
-  MIN(ride_length_minutes) AS min_ride
+  MIN(ride_length_minutes) AS min_ride,
+  COUNTIF(ride_length_minutes = 0) AS zero_minute_rides,
+  COUNTIF(
+    (member_casual = 'member' AND ride_length_minutes = 1499) OR
+    (member_casual = 'casual' AND ride_length_minutes = 1574)
+  ) AS max_length_rides
 FROM `cyclistic-bike-share-heinnurm.bike_share_data.cleaned_trips`
 GROUP BY member_casual
 ```
 
-| Metric | Members | Casual | 
-|-----------|-----------|-------------:|
-| Maximum ride length | 1499 min | 1574 min |
-| Minimum ride length | 0 min | 0 min |
+| Metric                      | Members  | Casual   |
+| --------------------------- | -------- | -------- |
+| Maximum ride length         | 1499 min | 1574 min |
+| Minimum ride length         | 0 min    | 0 min    |
+| Rides with 0 min duration   | 69,260   | 79,112   |
+| Rides with maximum duration | 948      | 1        |
 
-These values help identify:
-- extreme ride durations
-- potential data anomalies or system limits
+The dataset contains a notable number of rides with a duration of 0 minutes for both rider types. In practice, a ride duration of exactly zero minutes is unlikely because unlocking and returning a bike typically requires at least a short amount of time. These entries may therefore represent system recording issues, cancelled rides immediately after unlocking, or timestamp inaccuracies.
 
-The similar maximum values suggest that both rider types occasionally take very long rides, but this behavior is not typical for most users.
+Maximum ride durations appear to be very rare events. For example, only one casual ride reached the maximum duration of 1574 minutes, while 948 member rides reached the maximum value of 1499 minutes. These extreme values likely represent outliers rather than typical user behavior.
+
+Overall, while both rider types occasionally have very long rides, the majority of trips are considerably shorter, and extreme values should be interpreted cautiously when analyzing ride duration patterns.
 
 ### 4.5. Rides by weekday ###
 
@@ -261,13 +268,22 @@ ORDER BY day_of_week
 
 Example values:
 
-| Day      | Members | Casual  |
-| -------- | ------- | ------- |
-| Monday   | 504,352 | 228,824 |
-| Thursday | 571,181 | 257,285 |
-| Saturday | 449,038 | 413,955 |
-| Sunday   | 382,132 | 332,460 |
-
+| member_casual | day_of_week |  rides |
+| ------------- | ----------- | -----: |
+| member        | Friday      | 527451 |
+| casual        | Friday      | 319965 |
+| member        | Monday      | 504352 |
+| casual        | Monday      | 228824 |
+| member        | Saturday    | 449038 |
+| casual        | Saturday    | 413955 |
+| member        | Sunday      | 382132 |
+| casual        | Sunday      | 332460 |
+| member        | Thursday    | 571181 |
+| casual        | Thursday    | 257285 |
+| member        | Tuesday     | 569167 |
+| casual        | Tuesday     | 227079 |**
+| casual        | Wednesday   | 220516 |
+| member        | Wednesday   | 548658 |
 
 Key observations:
 - Members ride most frequently on weekdays, especially Tuesday, Wednesday, and Thursday
@@ -275,30 +291,37 @@ Key observations:
 
 ### 4.6. Average ride length by weekday ###
 
-| Day of week | Member avg ride (min) | Casual avg ride (min) |
-| ----------- | --------------------- | --------------------- |
-| Monday      | ~12                   | ~19                   |
-| Wednesday   | ~12                   | ~19                   |
-| Friday      | ~13                   | ~22                   |
-| Saturday    | ~15                   | ~28                   |
-| Sunday      | ~16                   | ~30                   |
+| member_casual | day_of_week | avg_ride_length_minutes | median_ride_length_minutes |
+| ------------- | ----------- | ----------------------: | -------------------------: |
+| member        | Friday      |                   11.91 |                          8 |
+| casual        | Friday      |                   22.07 |                         11 |
+| member        | Monday      |                   11.51 |                          8 |
+| casual        | Monday      |                   21.84 |                         10 |
+| member        | Saturday    |                   13.08 |                          9 |
+| casual        | Saturday    |                   24.82 |                         13 |
+| member        | Sunday      |                   13.17 |                          9 |
+| casual        | Sunday      |                   25.67 |                         13 |
+| member        | Thursday    |                   11.48 |                          8 |
+| casual        | Thursday    |                   19.40 |                         10 |
+| member        | Tuesday     |                   11.51 |                          8 |
+| casual        | Tuesday     |                   19.36 |                         10 |
+| member        | Wednesday   |                   11.38 |                          8 |
+| casual        | Wednesday   |                   18.23 |                          9 |
 
 ```sql
 SELECT
   member_casual,
   day_of_week,
-  AVG(ride_length_minutes) AS avg_ride
+  AVG(ride_length_minutes) AS avg_ride_length_minutes,
+  APPROX_QUANTILES(ride_length_minutes, 2)[OFFSET(1)] AS median_ride_length_minutes
 FROM `cyclistic-bike-share-heinnurm.bike_share_data.cleaned_trips`
 GROUP BY member_casual, day_of_week
 ORDER BY day_of_week
 ```
 
-Data shows that: 
-- Casual riders consistently have longer ride durations than members.
-- The difference becomes especially noticeable during weekends.
-- Weekend rides by casual riders can be almost twice as long as those by members.
-
-Cyclistic members seem to rely on bikes as a transportation tool, while casual riders treat them more like a recreational service.
+The results show clear differences between casual riders and members.
+- Casual riders consistently have longer ride durations on every day of the week. Their average ride length ranges from 18 to 26 minutes, while member rides remain much shorter at around 11–13 minutes.
+- Median values confirm the same pattern. Member rides typically last 8–9 minutes, whereas casual rides range between 9 and 13 minutes, indicating that the difference is consistent and not caused only by extreme values.
 
 ### 4.7. Rides by month ###
 
@@ -331,9 +354,6 @@ Data shows that:
 - Both rider types increase during spring and summer.
 - Casual riders show much stronger seasonality.
 - Casual rides peak during summer months (June–August).
-- Members maintain relatively consistent activity throughout the year.
-
-Casual riders are primarily seasonal leisure users, while members are regular transportation users.
 
 ### 4.8. Bikes type usage ###
 
@@ -354,7 +374,7 @@ GROUP BY member_casual, rideable_type
 Data shows that: 
 - Both rider groups frequently use classic bikes.
 - Members show strong adoption of electric bikes, likely for commuting efficiency.
-- Casual riders use docked bikes more often.
+- Casual riders use electric bikes more often.
 
 Casual riders appear to prioritize accessibility and flexibility, while members prioritize efficiency and reliability.
 
