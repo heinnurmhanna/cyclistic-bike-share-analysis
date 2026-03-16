@@ -413,6 +413,8 @@ Key Insights:
 
 ## 5. SHARE ##
 
+The following visualizations were created using Tableau, while the summarized insights are based on the BigQuery analysis performed in the previous sections. Tableau was used to visualize patterns in the data and highlight the key behavioral differences between casual riders and Cyclistic annual members.
+
 ## Cyclistic Bike Usage by Day of Week
 
 ![Cyclistic Bike Usage](bike_usage_day_of_week.png)
