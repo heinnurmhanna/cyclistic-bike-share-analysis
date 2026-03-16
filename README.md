@@ -10,7 +10,7 @@ Stakeholders
 - Cyclistic Marketing Team
 - Cyclistic Executive Team
 
-## 1. ANALYSE ##
+## 1. ASK ##
 
 Three questions will guide the future marketing program:
 1. How do annual members and casual riders use Cyclistic bikes differently?
@@ -192,30 +192,33 @@ This supports Cyclistic's business strategy, since annual members are the most p
 
 However, casual riders still represent a significant user group, meaning there is strong potential to convert them into members.
 
-### 4.3. Average ride duration ###
+### 4.3. Average and median ride duration ###
 
-The average ride duration was calculated for each rider type.
+The average and median ride duration were calculated for each rider type.
 
 ```sql
 SELECT
   member_casual,
-  AVG(ride_length_minutes) AS avg_ride_length
+  AVG(ride_length_minutes) AS avg_ride_length,
+  APPROX_QUANTILES(ride_length_minutes, 100)[OFFSET(50)] AS median_ride_length
 FROM `cyclistic-bike-share-heinnurm.bike_share_data.cleaned_trips`
 GROUP BY member_casual
 ```
 
-| User type | Average ride length (minutes) |
-|-----------|-------------:|
-| Casual riders | 22.14 min |
-| Annual members | 11.92 min |
+| User type | Average ride length (minutes) | Median ride length (minutes) |
+|-----------|--------------|-------------:|
+| Casual riders | 22.14 min | 11 min |
+| Annual members | 11.92 min | 8 min |
 
-Why this is important? This reveals a clear behavioral difference:
-- Casual riders take significantly longer rides
-- Members take shorter rides
+Using both the average and the median gives a more complete picture of rider behavior.
 
-This suggests:
-- casual riders likely use bikes for leisure activities
-- members likely use bikes for commuting or short trips
+The average shows the overall mean ride duration, but it can be influenced by unusually long rides. The median shows the middle value, meaning that 50% of rides are shorter and 50% are longer. Because of this, the median is often a better measure of a “typical” ride.
+
+This reveals a clear behavioral difference:
+- Casual riders take significantly longer rides on average
+- Members take shorter rides on average
+- If the median for casual riders is also clearly higher, this confirms that their rides are generally longer, not just affected by a few extreme values
+- If the average is much higher than the median, this suggests the presence of long outlier rides
 
 ### 4.4. Ride duration distribution ###
 
@@ -234,7 +237,7 @@ GROUP BY member_casual
 | Metric | Members | Casual | 
 |-----------|-----------|-------------:|
 | Maximum ride length | 1499 min | 1574 min |
-| Maximum ride length | 0 min | 0 min |
+| Minimum ride length | 0 min | 0 min |
 
 These values help identify:
 - extreme ride durations
