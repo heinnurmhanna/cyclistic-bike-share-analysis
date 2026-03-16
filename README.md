@@ -429,7 +429,7 @@ The following visualizations were created using Tableau, while the summarized in
 
 ## Number of Rides by Day of Week and Rider Type ##
 
-![Cyclistic Bike Usage](bike_usage_day_of_week.png)
+![Cyclistic Bike Usage](number_of_rides.png)
 
 ## Bike Type Usage by Rider Type
 
